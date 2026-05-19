@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ entry.title }}{% endblock %}
+
+{% block content %}
+<article class="entry-detail">
+    <header class="entry-header">
+        <h1>{{ entry.title }}</h1>
+        <div class="entry-actions">
+            <a href="/edit/{{ entry.id }}" class="btn-secondary">Edit</a>
+            <form action="/delete/{{ entry.id }}" method="POST" class="inline-form" onsubmit="return confirm('Delete this entry?')">
+                <button type="submit" class="btn-danger">Delete</button>
+            </form>
+        </div>
+    </header>
+
+    <div class="entry-meta-bar">
+        <span>Created: {{ entry.created_at }}</span>
+        <span>Updated: {{ entry.updated_at }}</span>
+    </div>
+
+    {% if entry.tags %}
+    <div class="tag-list">
+        {% for tag in entry.tags %}
+        <a href="/tag/{{ tag }}" class="tag">{{ tag }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="entry-content">
+        {{ entry.content.replace('\n', '<br>')|safe }}
+    </div>
+</article>
+{% endblock %}

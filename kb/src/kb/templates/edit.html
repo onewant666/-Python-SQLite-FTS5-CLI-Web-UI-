@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{% if entry %}Edit Entry{% else %}New Entry{% endif %}{% endblock %}
+
+{% block content %}
+<h1>{% if entry %}Edit Entry{% else %}New Entry{% endif %}</h1>
+
+{% if error %}
+<p class="error-message">{{ error }}</p>
+{% endif %}
+
+<form method="POST" class="entry-form">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required
+               value="{{ entry.title if entry else '' }}"
+               placeholder="Entry title...">
+    </div>
+
+    <div class="form-group">
+        <label for="tags">Tags</label>
+        <input type="text" id="tags" name="tags"
+               value="{{ entry.tags|join(', ') if entry else '' }}"
+               placeholder="comma, separated, tags">
+    </div>
+
+    <div class="form-group">
+        <label for="content">Content</label>
+        <textarea id="content" name="content" rows="20"
+                  placeholder="Write your content here...">{{ entry.content if entry else '' }}</textarea>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-primary">Save</button>
+        {% if entry %}
+        <a href="/entry/{{ entry.id }}" class="btn-secondary">Cancel</a>
+        {% else %}
+        <a href="/" class="btn-secondary">Cancel</a>
+        {% endif %}
+    </div>
+</form>
+{% endblock %}

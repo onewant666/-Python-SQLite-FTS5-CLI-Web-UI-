@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="main-col">
+        <h2>Recent Entries</h2>
+        {% if entries %}
+            {% for entry in entries %}
+            <article class="entry-card">
+                <h3><a href="/entry/{{ entry.id }}">{{ entry.title }}</a></h3>
+                <p class="entry-preview">
+                    {{ entry.content[:200] }}{% if entry.content|length > 200 %}...{% endif %}
+                </p>
+                <div class="entry-meta">
+                    <span class="text-muted text-sm">{{ entry.updated_at }}</span>
+                    {% if entry.tags %}
+                    <span class="tag-list">
+                        {% for tag in entry.tags[:5] %}
+                        <a href="/tag/{{ tag }}" class="tag">{{ tag }}</a>
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <p>No entries yet.</p>
+                <a href="/new" class="btn-primary">Create your first note</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <aside class="side-col">
+        <h3>Tags</h3>
+        {% if tags %}
+        <div class="tag-cloud">
+            {% for t in tags %}
+            <a href="/tag/{{ t.name }}" style="font-size: {{ t.size }}">{{ t.name }}</a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted">No tags yet.</p>
+        {% endif %}
+    </aside>
+</div>
+{% endblock %}

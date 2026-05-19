@@ -1,0 +1,9 @@
+flask<4.0,>=3.0
+click<9.0,>=8.0
+
+[chinese]
+jieba>=0.42
+
+[markdown]
+markdown>=3.0
+pygments>=2.0

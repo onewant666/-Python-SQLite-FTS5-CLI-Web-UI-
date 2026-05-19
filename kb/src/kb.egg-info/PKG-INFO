@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: kb
+Version: 0.1.0
+Summary: A local knowledge base with full-text search
+License: MIT
+Requires-Python: >=3.9
+Requires-Dist: flask<4.0,>=3.0
+Requires-Dist: click<9.0,>=8.0
+Provides-Extra: chinese
+Requires-Dist: jieba>=0.42; extra == "chinese"
+Provides-Extra: markdown
+Requires-Dist: markdown>=3.0; extra == "markdown"
+Requires-Dist: pygments>=2.0; extra == "markdown"

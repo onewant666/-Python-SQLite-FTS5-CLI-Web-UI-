@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Home{% endblock %} - KB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="/" class="logo">KB</a>
+            <form action="/search" method="GET" class="search-form">
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Search..."
+                    value="{{ query or '' }}"
+                    class="search-input"
+                    id="search-input"
+                    list="search-suggestions"
+                    autocomplete="off"
+                >
+                <datalist id="search-suggestions"></datalist>
+            </form>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/tags">Tags</a>
+                <a href="/new" class="btn-primary">+ New</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>KB &mdash; Local Knowledge Base</p>
+    </footer>
+
+    <script>
+    // Search autocomplete
+    const searchInput = document.getElementById('search-input');
+    const datalist = document.getElementById('search-suggestions');
+    if (searchInput && datalist) {
+        let timer;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(timer);
+            const val = this.value.trim();
+            if (val.length < 2) { datalist.innerHTML = ''; return; }
+            timer = setTimeout(() => {
+                fetch('/api/search?q=' + encodeURIComponent(val))
+                    .then(r => r.json())
+                    .then(items => {
+                        datalist.innerHTML = '';
+                        items.forEach(t => {
+                            const opt = document.createElement('option');
+                            opt.value = t;
+                            datalist.appendChild(opt);
+                        });
+                    });
+            }, 200);
+        });
+    }
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
